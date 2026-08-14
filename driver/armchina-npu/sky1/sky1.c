@@ -395,14 +395,8 @@ static int sky1_npu_probe(struct platform_device *p_dev)
 #ifdef CONFIG_ENABLE_DEVFREQ
 	ret = sky1_npu_devfreq_init(&p_dev->dev, cix_aipu_priv);
 	if (ret) {
-		/*
-		 * On generic/mainline kernels the SCMI "perf" power domain may
-		 * not be registered (e.g. no SCMI-over-ACPI support), so DVFS is
-		 * unavailable. That must not block the NPU: warn and carry on at
-		 * the firmware default frequency.
-		 */
-		dev_warn(&p_dev->dev, "aipu devfreq init failed (%d); continuing without DVFS\n", ret);
-		ret = 0;
+		dev_err(&p_dev->dev, "aipu devfreq init failed, ret: %d\n", ret);
+		goto devfreq_init_failed;
 	}
 #endif
 
@@ -448,6 +442,7 @@ npu_probe_failed:
 	sky1_npu_devfreq_remove(&p_dev->dev, cix_aipu_priv);
 #endif
 
+devfreq_init_failed:
 	for (i=0; i < CIX_NPU_PD_NUM; i++) {
 		dev_pm_domain_detach(cix_aipu_priv->pd_core[i], true);
 	}
