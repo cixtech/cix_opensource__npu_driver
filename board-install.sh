@@ -12,18 +12,18 @@ if [ ! -d "/lib/modules/$(uname -r)/build" ]; then
 fi
 
 echo "== removing any stale DKMS registration =="
-dkms remove -m aipu -v "$VER" --all 2>/dev/null || true
-rm -rf "/usr/src/aipu-$VER"
+sudo dkms remove -m aipu -v "$VER" --all 2>/dev/null || true
+sudo rm -rf "/usr/src/aipu-$VER"
 
 echo "== copying source to /usr/src =="
-cp -r "$SRC" "/usr/src/aipu-$VER"
-rm -f "/usr/src/aipu-$VER/"*.o "/usr/src/aipu-$VER/"*.ko "/usr/src/aipu-$VER/"*.mod* 2>/dev/null || true
-rm -rf "/usr/src/aipu-$VER/armchina-npu/"*.o "/usr/src/aipu-$VER/armchina-npu/"*.ko 2>/dev/null || true
+sudo cp -r "$SRC" "/usr/src/aipu-$VER"
+sudo rm -f "/usr/src/aipu-$VER/"*.o "/usr/src/aipu-$VER/"*.ko "/usr/src/aipu-$VER/"*.mod* 2>/dev/null || true
+sudo rm -rf "/usr/src/aipu-$VER/armchina-npu/"*.o "/usr/src/aipu-$VER/armchina-npu/"*.ko 2>/dev/null || true
 
 echo "== dkms add/build/install =="
-dkms add -m aipu -v "$VER"
-dkms build -m aipu -v "$VER" --no-prepare-kernel
-dkms install -m aipu -v "$VER" --no-prepare-kernel
+sudo dkms add -m aipu -v "$VER"
+sudo dkms build -m aipu -v "$VER" --no-prepare-kernel
+sudo dkms install -m aipu -v "$VER" --no-prepare-kernel
 
 echo "== load =="
 sudo modprobe aipu || true
