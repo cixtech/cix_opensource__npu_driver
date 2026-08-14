@@ -7,42 +7,42 @@ ccflags-y += -DKMD_VERSION=\"$(COMPASS_DRV_BTENVAR_KMD_VERSION)\" \
                    -I$(M)/armchina-npu/ -I$(M)/armchina-npu/include -I$(M)/armchina-npu/zhouyi \
                    -D$(BUILD_AIPU_VERSION_KMD)
 
-COMM_OBJ := $(SRC_DIR)/armchina-npu/aipu.o \
-            $(SRC_DIR)/armchina-npu/aipu_common.o \
-            $(SRC_DIR)/armchina-npu/aipu_io.o \
-            $(SRC_DIR)/armchina-npu/aipu_irq.o \
-            $(SRC_DIR)/armchina-npu/aipu_job_manager.o \
-            $(SRC_DIR)/armchina-npu/aipu_mm.o \
-            $(SRC_DIR)/armchina-npu/aipu_dma_buf.o \
-            $(SRC_DIR)/armchina-npu/aipu_priv.o \
-            $(SRC_DIR)/armchina-npu/aipu_tcb.o \
-            $(SRC_DIR)/armchina-npu/zhouyi/zhouyi.o
+COMM_OBJ := armchina-npu/aipu.o \
+            armchina-npu/aipu_common.o \
+            armchina-npu/aipu_io.o \
+            armchina-npu/aipu_irq.o \
+            armchina-npu/aipu_job_manager.o \
+            armchina-npu/aipu_mm.o \
+            armchina-npu/aipu_dma_buf.o \
+            armchina-npu/aipu_priv.o \
+            armchina-npu/aipu_tcb.o \
+            armchina-npu/zhouyi/zhouyi.o
 
 ifeq ($(BUILD_AIPU_VERSION_KMD), BUILD_ZHOUYI_V1)
-    AIPU_OBJ := $(SRC_DIR)/armchina-npu/zhouyi/v1.o \
-                $(SRC_DIR)/armchina-npu/zhouyi/v1v2_priv.o
+    AIPU_OBJ := armchina-npu/zhouyi/v1.o \
+                armchina-npu/zhouyi/v1v2_priv.o
     ccflags-y += -DCONFIG_ARMCHINA_NPU_ARCH_V1
 else ifeq ($(BUILD_AIPU_VERSION_KMD), BUILD_ZHOUYI_V2)
-    AIPU_OBJ := $(SRC_DIR)/armchina-npu/zhouyi/v2.o \
-                $(SRC_DIR)/armchina-npu/zhouyi/v1v2_priv.o
+    AIPU_OBJ := armchina-npu/zhouyi/v2.o \
+                armchina-npu/zhouyi/v1v2_priv.o
     ccflags-y += -DCONFIG_ARMCHINA_NPU_ARCH_V2
 else ifeq ($(BUILD_AIPU_VERSION_KMD), BUILD_ZHOUYI_V3)
-    AIPU_OBJ := $(SRC_DIR)/armchina-npu/zhouyi/v3.o \
-                $(SRC_DIR)/armchina-npu/zhouyi/v3_priv.o
+    AIPU_OBJ := armchina-npu/zhouyi/v3.o \
+                armchina-npu/zhouyi/v3_priv.o
     ccflags-y += -DCONFIG_ARMCHINA_NPU_ARCH_V3
 else ifeq ($(BUILD_AIPU_VERSION_KMD), BUILD_ZHOUYI_V3_1)
-    AIPU_OBJ := $(SRC_DIR)/armchina-npu/zhouyi/v3_1.o \
-                $(SRC_DIR)/armchina-npu/zhouyi/v3_1_priv.o
+    AIPU_OBJ := armchina-npu/zhouyi/v3_1.o \
+                armchina-npu/zhouyi/v3_1_priv.o
     ccflags-y += -DCONFIG_ARMCHINA_NPU_ARCH_V3_1
 else
     #build all
-    AIPU_OBJ := $(SRC_DIR)/armchina-npu/zhouyi/v1.o \
-                $(SRC_DIR)/armchina-npu/zhouyi/v2.o \
-                $(SRC_DIR)/armchina-npu/zhouyi/v3.o \
-                $(SRC_DIR)/armchina-npu/zhouyi/v3_1.o \
-                $(SRC_DIR)/armchina-npu/zhouyi/v1v2_priv.o \
-                $(SRC_DIR)/armchina-npu/zhouyi/v3_priv.o \
-                $(SRC_DIR)/armchina-npu/zhouyi/v3_1_priv.o
+    AIPU_OBJ := armchina-npu/zhouyi/v1.o \
+                armchina-npu/zhouyi/v2.o \
+                armchina-npu/zhouyi/v3.o \
+                armchina-npu/zhouyi/v3_1.o \
+                armchina-npu/zhouyi/v1v2_priv.o \
+                armchina-npu/zhouyi/v3_priv.o \
+                armchina-npu/zhouyi/v3_1_priv.o
     ccflags-y += -DCONFIG_ARMCHINA_NPU_ARCH_V1 \
                     -DCONFIG_ARMCHINA_NPU_ARCH_V2 \
                     -DCONFIG_ARMCHINA_NPU_ARCH_V3 \
@@ -50,19 +50,19 @@ else
 endif
 
 ifeq ($(BUILD_TARGET_PLATFORM_KMD), BUILD_PLATFORM_R329)
-    INIT_OBJ  := $(SRC_DIR)/armchina-npu/r329/r329.o
+    INIT_OBJ  := armchina-npu/r329/r329.o
 else ifeq ($(BUILD_TARGET_PLATFORM_KMD), BUILD_PLATFORM_SKY1)
-    INIT_OBJ := $(SRC_DIR)/armchina-npu/sky1/sky1.o
+    INIT_OBJ := armchina-npu/sky1/sky1.o
     ccflags-y += -DCONFIG_SKY1
 else ifeq ($(BUILD_TARGET_PLATFORM_KMD), BUILD_PLATFORM_SKY1_ANDROID)
-    INIT_OBJ := $(SRC_DIR)/armchina-npu/sky1/sky1.o
+    INIT_OBJ := armchina-npu/sky1/sky1.o
     ccflags-y += -DCONFIG_SKY1
     ccflags-y += -DCONFIG_ANDROID
 else ifeq ($(BUILD_TARGET_PLATFORM_KMD), BUILD_PLATFORM_SKY1_ANDROID_DFT)
-    INIT_OBJ := $(SRC_DIR)/armchina-npu/default/default.o
+    INIT_OBJ := armchina-npu/default/default.o
     ccflags-y += -DCONFIG_ANDROID
 else
-    INIT_OBJ := $(SRC_DIR)/armchina-npu/default/default.o
+    INIT_OBJ := armchina-npu/default/default.o
 endif
 
 ifneq ($(BUILD_NPU_DEVFREQ), n)

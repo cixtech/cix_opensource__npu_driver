@@ -572,3 +572,5 @@ static struct platform_driver aipu_platform_driver = {
 
 module_platform_driver(aipu_platform_driver);
 MODULE_LICENSE("GPL v2");
+MODULE_DESCRIPTION("ArmChina Zhouyi AI accelerator driver");
+MODULE_AUTHOR("Arm Technology (China) Co. Ltd.");
