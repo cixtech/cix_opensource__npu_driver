@@ -21,6 +21,24 @@
 #include "config.h"
 #include "aipu_priv.h"
 #include "aipu_mm.h"
+
+/*
+ * Kernel ≥ 6.8 renamed MAX_ORDER to MAX_PAGE_ORDER; keep building on both.
+ */
+#ifdef MAX_PAGE_ORDER
+#define AIPU_MAX_ORDER MAX_PAGE_ORDER
+#else
+#define AIPU_MAX_ORDER MAX_ORDER
+#endif
+
+/*
+ * pgprot_dmacoherent() moved out of the default include chain in newer
+ * kernels (it now lives in <linux/dma-map-ops.h>); provide the classic
+ * fallback so this file keeps building without that internal header.
+ */
+#ifndef pgprot_dmacoherent
+#define pgprot_dmacoherent(prot) pgprot_noncached(prot)
+#endif
 #include "aipu_common.h"
 #include "aipu_dma_buf.h"
 #include "v2.h"
@@ -2737,7 +2755,7 @@ static struct page **aipu_dma_alloc_pages(struct device *dev,
 	struct page **pages;
 	unsigned int i = 0, nid = dev_to_node(dev);
 
-	order_mask &= (2U << MAX_ORDER) - 1;
+	order_mask &= (2U << AIPU_MAX_ORDER) - 1;
 	//pr_info("order_mask 0x%lx\n", order_mask);
 	if (!order_mask)
 		return NULL;
