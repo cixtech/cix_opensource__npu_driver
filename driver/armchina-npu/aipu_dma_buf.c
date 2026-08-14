@@ -381,5 +381,6 @@ int aipu_detach_dma_buf(struct aipu_memory_manager *mm, int fd)
 }
 
 #if KERNEL_VERSION(5, 4, 0) < LINUX_VERSION_CODE
-MODULE_IMPORT_NS(DMA_BUF);
+/* Kernel ≥ 6.14: MODULE_IMPORT_NS() no longer stringifies its argument. */
+MODULE_IMPORT_NS("DMA_BUF");
 #endif
