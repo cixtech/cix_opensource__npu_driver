@@ -3931,6 +3931,17 @@ int aipu_free_dma_iova_phy(struct aipu_memory_manager *mm, struct aipu_buf_desc 
 	/* V3 custom IOVA path */
 	if (mm->version == AIPU_ISA_VERSION_ZHOUYI_V3 && 
 	    mm->has_iommu && mm->use_v3_custom_iova) {
+		/*
+		 * desc->asid is a [kmd] output field of struct aipu_buf_desc.
+		 * User space does not have to fill it in for AIPU_IOCTL_FREE_BUF
+		 * (Arm China's libaipudrv leaves it uninitialised), so don't trust
+		 * it. The ASID slots do not overlap (ASID n starts at n * 4 GB),
+		 * so the device PA names its ASID.
+		 */
+		if (!aipu_mm_v3_pa_to_iova(mm, desc->pa, desc->asid) &&
+		    (desc->pa >> 32) < ZHOUYI_ASID_COUNT)
+			desc->asid = desc->pa >> 32;
+
 		/* Convert PA to IOVA */
 		iova = aipu_mm_v3_pa_to_iova(mm, desc->pa, desc->asid);
 		if (!iova) {
